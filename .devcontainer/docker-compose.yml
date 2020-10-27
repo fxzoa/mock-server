@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+
+  mockServer:
+    image: mockserver/mockserver:mockserver-5.11.1
+    command: -logLevel DEBUG -serverPort 1080
+    ports:
+      - 1080:1080
+    environment:
+      MOCKSERVER_LOG_LEVEL: DEBUG
+      MOCKSERVER_MAX_EXPECTATIONS: 100
+      MOCKSERVER_MAX_HEADER_SIZE: 8192
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: true
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+      MOCKSERVER_PERSIST_EXPECTATIONS: true
+      MOCKSERVER_PERSISTED_EXPECTATIONS_PATH: mockserverInitialization.json
+    volumes:
+      - type: bind
+        source: ../config
+        target: /config
+    networks:
+      - mockserver-net
+
+  workServer:
+    image: centos
+    command: /sbin/init
+    volumes:
+      - type: bind
+        source: ../
+        target: /workspaces/mock-server
+    networks:
+      - mockserver-net
+    depends_on:
+      - mockServer
+
+networks:
+  mockserver-net:
+    driver: bridge
