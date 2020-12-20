@@ -1,13 +1,13 @@
 
-//var dotenv = require('dotenv').config();
-//console.log(`## mockserver-properties = ${process.env.MOCKSERVER_PROPERTY_FILE} ##`);
+var dotenv = require('dotenv').config();
+console.log(`## mockserver-properties = ${process.env.MOCKSERVER_PROPERTY_FILE} ##`);
 
 var mockserver = require('mockserver-node');
 
 mockserver.start_mockserver({
                 serverPort: 1080,
-                proxyRemotePort: 4000,
-                proxyRemoteHost: "localhost",
+                proxyRemotePort: process.env.proxyRemotePort,
+                proxyRemoteHost: process.env.proxyRemoteHost,
                 trace: true,
 //                verbose: true
             });
