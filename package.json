@@ -4,7 +4,6 @@
   "description": "docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG",
   "main": "mock-server.js",
   "scripts": {
-    "setEnv": "export $(cat .env | xargs) & env",
     "start": "node mock-server.js"
   },
   "repository": {
@@ -18,7 +17,7 @@
   },
   "homepage": "https://github.com/fxzoa/mock-server#readme",
   "devDependencies": {
-    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
     "mockserver-node": "^5.11.2"
   }
 }

@@ -1,6 +1,4 @@
 ### file variables define area
-### file variables define area
-@host = http://localhost:80
 @expect = /mockserver/expectation
 
 ### reset everything
@@ -8,24 +6,20 @@ curl -v -X PUT {{host}}/mockserver/reset
 
 
 ### mockserver提供Rest APIを利用し、Response期待値を必要に応じ随時追加
-PUT {{host}}{{expect}} http/1.1
-Content-Type: application/json; charset=utf-8
+PUT {{expect}}
+Host: {{host}}
 
 {
     "httpRequest": {
         "method": "GET",
-        "path": "/some.*"
+        "path": "/data.*"
     },
     "httpResponse": {
         "statusCode": 200,
         "body": {
             "contentType": "text/plain; charset=utf-8",
             "type": "STRING",
-            "string": "あああ"
-        },
-        "delay": {
-            "timeUnit": "SECONDS",
-            "value": 10
+            "string": "aaaaaaaaaaaaaa"
         }
     },
     "times": {
