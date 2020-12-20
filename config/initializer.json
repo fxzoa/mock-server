@@ -83,4 +83,16 @@
       "contentType" : "text/plain; charset=utf-8"
     }
   }
+}, {
+  "id" : "aa344698-8a08-4687-9479-eadacaba734d",
+  "priority" : 0,
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "body" : "if no request matcher is specified then every request matched"
+  }
 } ]

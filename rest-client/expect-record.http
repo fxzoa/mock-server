@@ -1,0 +1,31 @@
+### file variables define area
+@host = http://localhost:80
+@record = /mockserver/retrieve
+
+### mock-server offical site
+https://mock-server.com/
+
+### mockServer Dashboard(UI)
+GET {{host}}/mockserver/dashboard 
+
+
+### retrieve all recorded expectations
+curl -v -X PUT {{host}}{{record}}?type=RECORDED_EXPECTATIONS
+
+
+### retrieve recorded expectations using request matcher
+curl -v -X PUT {{host}}{{record}}?type=RECORDED_EXPECTATIONS -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+
+### Retrieving Recorded Requests
+curl -v -X PUT {{host}}{{record}}?type=REQUESTS&format=JSON -d '{
+    "path": "/some/path"
+}'
+
+### Retrieve Recorded Requests & Responses
+curl -v -X PUT {{host}}{{record}}?type=REQUEST_RESPONSES -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'

@@ -4,7 +4,8 @@
   "description": "docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG",
   "main": "mock-server.js",
   "scripts": {
-    "start": "node mock-server.js"
+    "start": "node mock-server.js",
+    "proxy": "node proxy-server.js"
   },
   "repository": {
     "type": "git",

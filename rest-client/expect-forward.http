@@ -1,0 +1,187 @@
+### file variables define area
+@host = http://localhost:80
+@expect = /mockserver/expectation
+
+### forward exact request
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForward": {
+        "host": "mock-server.com",
+        "port": 80,
+        "scheme": "HTTP"
+    }
+}'
+
+### forward exact request in HTTPS
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForward": {
+        "host": "mock-server.com",
+        "port": 443,
+        "scheme": "HTTPS"
+    }
+}'
+
+### forward overridden request
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpOverrideForwardedRequest": {
+        "httpRequest": {
+            "path": "/some/other/path",
+            "headers": {
+                "Host": ["target.host.com"]
+            }
+        }
+    }
+}'
+
+### forward overridden request and change response
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpOverrideForwardedRequest": {
+        "httpRequest": {
+            "path": "/some/other/path",
+            "headers": {
+                "Host": ["target.host.com"]
+            }
+        },
+        "httpResponse": {
+            "body": "some_overridden_body"
+        }
+    }
+}'
+
+### forward overridden request and change host and port
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpOverrideForwardedRequest": {
+        "httpRequest": {
+            "path": "/some/other/path",
+            "headers": {
+                "Host": ["any.host.com"]
+            },
+            "socketAddress": {
+                "host": "target.host.com",
+                "port": 1234,
+                "scheme": "HTTPS"
+            }
+        }
+    }
+}'
+
+### forward overridden request with delay
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpOverrideForwardedRequest": {
+        "httpRequest": {
+            "path": "/some/other/path",
+            "body": "some_overridden_body",
+            "headers": {
+                "Host": ["target.host.com"]
+            }
+        },
+        "delay": {
+            "timeUnit": "SECONDS",
+            "value": 10
+        }
+    }
+}'
+
+### velocity templated forward
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForwardTemplate": {
+        "template": "{\n" +
+        "    'path' : \"/somePath\",\n" +
+        "    'queryStringParameters' : {\n" +
+        "        'userId' : [ \"$!request.queryStringParameters['userId'][0]\" ]\n" +
+        "    },\n" +
+        "    'cookies' : {\n" +
+        "        'SessionId' : \"$!request.cookies['SessionId']\"\n" +
+        "    },\n" +
+        "    'headers' : {\n" +
+        "        'Host' : [ \"localhost:1081\" ]\n" +
+        "    },\n" +
+        "    'body': \"{'name': 'value'}\"\n" +
+        "}",
+        "templateType": "VELOCITY"
+    }
+}'
+
+### javascript templated forward
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForwardTemplate": {
+        "template": "return {\n" +
+        "    'path' : \"/somePath\",\n" +
+        "    'queryStringParameters' : {\n" +
+        "        'userId' : request.queryStringParameters && request.queryStringParameters['userId']\n" +
+        "    },\n" +
+        "    'headers' : {\n" +
+        "        'Host' : [ \"localhost:80\" ]\n" +
+        "    },\n" +
+        "    'body': JSON.stringify({'name': 'value'})\n" +
+        "};",
+        "templateType": "JAVASCRIPT"
+    }
+}'
+
+### javascript templated forward with delay
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForwardTemplate": {
+        "template": "return {\n" +
+        "    'path' : \"/somePath\",\n" +
+        "    'cookies' : {\n" +
+        "        'SessionId' : request.cookies && request.cookies['SessionId']\n" +
+        "    },\n" +
+        "    'headers' : {\n" +
+        "        'Host' : [ \"localhost:1081\" ]\n" +
+        "    },\n" +
+        "    'keepAlive' : true,\n" +
+        "    'secure' : true,\n" +
+        "    'body' : \"some_body\"\n" +
+        "};",
+        "templateType": "JAVASCRIPT",
+        "delay": {"timeUnit": "SECONDS", "value": 20}
+    }
+}'
+
+### class callback to override request & response
+curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+    "httpRequest" : {
+        "path" : "/some.*"
+    },
+    "httpForwardClassCallback" : {
+        "callbackClass" : "org.mockserver.examples.mockserver.CallbackActionExamples$TestExpectationForwardCallback"
+    }
+}
+
+### drop connection error
+curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpError": {
+        "dropConnection": true,
+        "responseBytes": "eQqmdjEEoaXnCvcK6lOAIZeU+Pn+womxmg=="
+    }
+}'

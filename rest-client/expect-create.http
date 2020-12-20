@@ -6,6 +6,12 @@
 ### reset everything
 curl -v -X PUT {{host}}/mockserver/reset
 
+### if no request matcher is specified then every request matched
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpResponse": {
+        "body": "if no request matcher is specified then every request matched"
+    }
+}'
 
 ### mockserver提供Rest APIを利用し、Response期待値を必要に応じ随時追加
 PUT {{host}}{{expect}} http/1.1

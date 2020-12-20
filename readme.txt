@@ -1,6 +1,9 @@
 # run docker container
 docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG
 
+### enable port forwording 
+java -jar ./mockserver-jetty-jar-with-dependencies.jar -serverPort 1080 -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com 
+
 # mock-server offical site
 https://mock-server.com/
 
