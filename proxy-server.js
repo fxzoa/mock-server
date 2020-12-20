@@ -9,7 +9,7 @@ mockserver.start_mockserver({
                 proxyRemotePort: process.env.proxyRemotePort,
                 proxyRemoteHost: process.env.proxyRemoteHost,
                 trace: true,
-//                verbose: true
+                verbose: true
             });
 
 /*
