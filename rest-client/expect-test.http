@@ -1,0 +1,81 @@
+### カスタム変数定義（Global変数は.setttings.jsonで定義し、カスタム変数で上書き可能）
+@createdAt = {{$datetime iso8601}}
+@modifiedBy = {{$processEnv USERNAME}}
+@token = user1 password1
+//@HOST = localhost:1080
+
+### quick search URL.
+### Ctrl+Alt+O or F1 -> @
+
+### request to mock-server expectation
+### Windows: Ctrl + Alt + R (run)
+GET {{host}}/some_a
+                 ?a=1
+                 &b=2
+Authorization: token {{token}}
+
+### mock-server test
+POST /login
+Host: {{host}}
+Cookie: key1 = val1
+Cookie: key2 = val2
+Date: {{$timestamp}}
+
+{
+    "username": "foo",
+    "password": "bar",
+    "created_at": "{{createdAt}}",
+    "modified_by": "{{modifiedBy}}"
+}
+
+### リクエストボディはファイルから読込
+POST {{host}}/login
+Authorization: token {{token}}
+
+< json/login-body.json
+
+### x-www-form-urlencoded
+POST https://api.example.com/login HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+name=foo
+&password=bar
+
+### cURLを生で書いて実行することも可能
+### リクエストをcURLとしてコピーする
+### F1で検索Windowsを開き、Copy Request As cURLを検索してクリックするとcURLのための文字列がクリップボードにコピー
+curl --request POST --url http://localhost:1080/login --header 'content-type: application/json; charset=utf-8' --header 'user-agent: vscode-restclient' --data '{"username": "foo","password": "bar"}'
+
+### リクエスト履歴再実行
+### Windows: Ctrl + Alt + H
+### F1 -> Rerun Last Request
+
+### Basic認証
+GET https://httpbin.org//basic-auth/user/passwd HTTP/1.1
+Authorization: Basic user passwd
+GET https://httpbin.org//basic-auth/user/passwd HTTP/1.1
+Authorization: Basic dXNlcjpwYXNzd2Q=
+
+### SSLクライアント証明書認証
+### .vscode/settings.json
+### cert: x509証明書へのパス
+### key: 秘密鍵へのパス
+"rest-client.certificates": {
+    "localhost:8081": {
+        "cert": "/Users/demo/Certificates/client.crt",
+        "key": "/Users/demo/Keys/client.key"
+    },
+    "example.com": {
+        "cert": "/Users/demo/Certificates/client.crt",
+        "key": "/Users/demo/Keys/client.key"
+    }
+}
+
+### AWS Signature v4
+GET https://httpbin.org/aws-auth HTTP/1.1
+Authorization: AWS <accessId> <accessKey> [token:<sessionToken>] [region:<regionName>] [service:<serviceName>]
+
+
+### 組み立てたHTTPリクエストを送信するためのクライアントコードを生成
+### Windows: Ctrl + Alt + C Or F1 -> Generate Code Snippet
+

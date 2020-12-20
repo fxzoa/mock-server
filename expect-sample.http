@@ -1,0 +1,220 @@
+### file variables define area
+@host = http://localhost:1080
+@expect = /mockserver/expectation
+
+### mock-server offical site
+https://mock-server.com/
+
+### mockServer Dashboard(UI)
+### http(s)://<host>:<port>/mockserver/dashboard
+http://localhost:1080/mockserver/dashboard
+
+### Creating Expectations
+https://mock-server.com/mock_server/creating_expectations.html
+
+### match request by header as matching key
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest" : {
+        "path" : "/some/path",
+        "headers" : {
+            "keyMatchStyle" : "MATCHING_KEY",
+            "multiValuedHeader" : [ "value.*" ],
+            "headerTwo" : [ "headerTwoValue" ]
+        }
+    },
+    "httpResponse" : {
+        "body" : "some_response_body"
+    }
+}'
+
+### match request by cookie and query parameter
+curl -v -X PUT {{host}}{{expect}} -d '{
+  "httpRequest" : {
+    "method" : "GET",
+    "path" : "/view/cart",
+    "queryStringParameters" : {
+      "cartId" : [ "055CA455-1DF7-45BB-8535-4F83E7266092" ]
+    },
+    "cookies" : {
+      "session" : "4930456C-C718-476F-971F-CB8E047AB349"
+    }
+  },
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}'
+
+### forword action
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForward": {
+        "host": "mock-server.com",
+        "port": 80,
+        "scheme": "HTTP"
+    }
+}'
+
+### error action
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpError": {
+        "dropConnection": true,
+        "responseBytes": "eQqmdjEEoaXnCvcK6lOAIZeU+Pn+womxmg=="
+    }
+}'
+
+### match request by optional cookie
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "httpRequest": {
+        "path": "/view/cart",
+        "queryStringParameters": {
+            "cartId": [{
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }]
+        },
+        "cookies": {
+            "?session": {
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }
+        }
+    },
+    "httpResponse": {
+        "body": "some_response_body"
+    }
+}'
+
+### match request by body sub-string
+curl -v -X PUT {{host}}{{expect}} -d '{
+  "httpRequest" : {
+    "body" : {
+      "type": "STRING",
+      "string": "username=foo&password=bar",
+      "subString": true
+    }
+  },
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}'
+
+### match request by form submission body
+curl -v -X PUT {{host}}{{expect}} -d '{
+  "httpRequest" : {
+    "method" : "POST",
+    "headers" : {
+      "Content-Type" : [ "application/x-www-form-urlencoded" ]
+    },
+    "body" : {
+      "type" : "PARAMETERS",
+      "parameters" : {
+        "email" : [ "joe.blogs@gmail.com" ],
+        "password" : [ "secure_Password123" ]
+      }
+    }
+  },
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}
+
+### match request by regex body
+curl -v -X PUT {{host}}{{expect}} -d '{
+  "httpRequest": {
+    "body": {
+      "type": "REGEX",
+      "regex": "starts_with_.*"
+    }
+  },
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}
+
+### reset everything
+curl -v -X PUT "http://localhost:1080/mockserver/reset
+
+### file variables define area
+@clear = /mockserver/clear
+
+### clear everything that matches request properties matcher
+curl -v -X PUT {{host}}{{clear}} -d '{
+    "path": "/some/path"
+}'
+
+### clear recorded requests and logs that matches request properties matcher
+curl -v -X PUT {{host}}{{clear}}?type=LOGS -d '{
+    "path": "/some/path"
+}'
+
+### clear expectations that matches request matcher
+curl -v -X PUT {{host}}{{clear}}?type=EXPECTATIONS" -d '{
+    "path": "/some/path"
+}'
+
+### retrieve all active expectations
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=ACTIVE_EXPECTATIONS"
+
+### retrieve active expectations using request matcher
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=ACTIVE_EXPECTATIONS" -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+
+### retrieve active expectations as json
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=ACTIVE_EXPECTATIONS&format=JSON" -d '{
+    "path": "/some/path"
+}'
+
+### Retrieving Recorded Expectations Code Examples
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=RECORDED_EXPECTATIONS"
+
+### retrieve recorded expectations using request matcher
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=RECORDED_EXPECTATIONS" -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+
+
+### retrieve recorded requests as json
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=REQUESTS"
+
+
+### retrieve recorded requests using request matcher
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=REQUESTS" -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+
+### retrieve recorded requests as json
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=REQUESTS&format=JSON" -d '{
+    "path": "/some/path"
+}'
+
+### retrieve all recorded requests and responses
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=REQUEST_RESPONSES"
+
+### retrieve recorded requests and responses using request matcher
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=REQUEST_RESPONSES" -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+
+### retrieve all recorded log messages
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=LOGS"
+
+### retrieve recorded log messages using request matcher
+curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=LOGS" -d '{
+    "path": "/some/path",
+    "method": "POST"
+}'
+

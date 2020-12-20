@@ -1,0 +1,30 @@
+{
+    "rest-client.defaultHeaders": {
+        "Content-Type": "application/json; charset=utf-8",
+        "User-Agent": "vscode-restclient"
+    },
+    "rest-client.logLevel": "verbose",
+    "rest-client.fontFamily": "Meiryo UI",
+    "rest-client.fontSize": 12,
+    "rest-client.showResponseInDifferentTab": true,
+    "rest-client.timeoutinmilliseconds": 50000,
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "version": "v1",
+            "prodToken": "foo",
+            "nonProdToken": "user password"
+        },
+        "local": {
+            "version": "v2",
+            "host": "localhost:1080",
+            "token": "{{$shared nonProdToken}}",
+            "secretKey": "devSecret"
+        },
+        "production": {
+            "host": "example.com",
+            "token": "{{$shared prodToken}}",
+            "secretKey" : "prodSecret"
+        }
+    }
+
+}

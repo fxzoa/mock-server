@@ -1,0 +1,24 @@
+{
+  "name": "mock-server",
+  "version": "1.0.0",
+  "description": "docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG",
+  "main": "mock-server.js",
+  "scripts": {
+    "env": "export $(cat .env | xargs) && env",
+    "start": "node mock-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fxzoa/mock-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fxzoa/mock-server/issues"
+  },
+  "homepage": "https://github.com/fxzoa/mock-server#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "mockserver-node": "^5.11.1"
+  }
+}

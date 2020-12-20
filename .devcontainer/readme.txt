@@ -1,1 +1,0 @@
-docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG

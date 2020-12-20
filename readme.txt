@@ -1,16 +1,15 @@
+# run docker container
 docker run -v %cd%/config:/config -p 1080:1080 mockserver/mockserver -serverPort 1080 -logLevel DEBUG
 
 # mock-server offical site
 https://mock-server.com/
 
-
-# mockServer Dashboard
+# mockServer Dashboard(UI)
 http(s)://<host>:<port>/mockserver/dashboard
-
+http://localhost:1080/mockserver/dashboard
 
 # Creating Expectations
 https://mock-server.com/mock_server/creating_expectations.html
-
 
 # match request by header as matching key
 curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
@@ -45,6 +44,28 @@ curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
   }
 }'
 
+# forword action
+curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpForward": {
+        "host": "mock-server.com",
+        "port": 80,
+        "scheme": "HTTP"
+    }
+}'
+
+# error action
+curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+    "httpRequest": {
+        "path": "/some/path"
+    },
+    "httpError": {
+        "dropConnection": true,
+        "responseBytes": "eQqmdjEEoaXnCvcK6lOAIZeU+Pn+womxmg=="
+    }
+}'
 
 # match request by optional cookie
 curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
@@ -77,7 +98,7 @@ curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
   "httpRequest" : {
     "body" : {
       "type": "STRING",
-      "string": "some_string",
+      "string": "username=foo&password=bar",
       "subString": true
     }
   },
@@ -85,21 +106,6 @@ curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
     "body" : "some_response_body"
   }
 }'
-
-
-# match request by regex body
-curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
-  "httpRequest": {
-    "body": {
-      "type": "REGEX",
-      "regex": "starts_with_.*"
-    }
-  },
-  "httpResponse" : {
-    "body" : "some_response_body"
-  }
-}
-
 
 # match request by form submission body
 curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
@@ -116,9 +122,23 @@ curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
       }
     }
   },
-  
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}
 
-curl -i -X POST -H -d '{"username":"foo", "password":"bar"}' http://mockServer:1080/login 
+# match request by regex body
+curl -v -X PUT "http://localhost:1080/mockserver/expectation" -d '{
+  "httpRequest": {
+    "body": {
+      "type": "REGEX",
+      "regex": "starts_with_.*"
+    }
+  },
+  "httpResponse" : {
+    "body" : "some_response_body"
+  }
+}
 
 # clear everything that matches request properties matcher
 curl -v -X PUT "http://localhost:1080/mockserver/clear" -d '{
@@ -140,7 +160,6 @@ curl -v -X PUT "http://localhost:1080/mockserver/reset
 
 # retrieve all active expectations
 curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=ACTIVE_EXPECTATIONS"
-
 
 # retrieve active expectations using request matcher
 curl -v -X PUT "http://localhost:1080/mockserver/retrieve?type=ACTIVE_EXPECTATIONS" -d '{
