@@ -1,0 +1,33 @@
+[
+    {
+        "httpRequest": {
+            "path": "/forward/path"
+        },
+        "httpForward": {
+            "host": "mock-server.com",
+            "port": 80,
+            "scheme": "HTTP"
+        }
+    },
+    {
+        "httpRequest": {
+            "method": "POST",
+            "path": "/login",
+            "body": {
+                "username": "foo",
+                "password": "bar"
+            }
+        },
+        "httpResponse": {
+            "statusCode": 302,
+            "headers": {
+                "Location": [
+                    "https://www.mock-server.com"
+                ]
+            },
+            "cookies": {
+                "sessionId": "2By8LOhBmaW5nZXJwcmludCIlMDAzMW"
+            }
+        }
+    }
+]

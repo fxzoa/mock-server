@@ -1,16 +1,15 @@
 ### file variables define area
-@host = http://localhost:1080
+@host = http://localhost:80
 @expect = /mockserver/expectation
 
 ### mock-server offical site
 https://mock-server.com/
 
-### mockServer Dashboard(UI)
-### http(s)://<host>:<port>/mockserver/dashboard
-http://localhost:1080/mockserver/dashboard
-
 ### Creating Expectations
 https://mock-server.com/mock_server/creating_expectations.html
+
+### mockServer Dashboard(UI)
+GET {{host}}/mockserver/dashboard
 
 ### match request by header as matching key
 curl -v -X PUT {{host}}{{expect}} -d '{
