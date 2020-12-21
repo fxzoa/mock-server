@@ -93,4 +93,21 @@
       }
     }
   }
+}, {
+  "id" : "80e4f68f-56fd-47c3-a991-6e2b7068a7ed",
+  "priority" : 0,
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "body" : {
+      "type" : "JSON",
+      "json" : {
+        "name" : "Suzuki 鈴木 from proxy updated."
+      }
+    }
+  }
 } ]

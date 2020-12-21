@@ -17,7 +17,7 @@
     "rest-client.environmentVariables": {
         "$shared": {
             "version": "v1",
-            "host": "localhost:1080",
+            "host": "localhost:80",
             "prodToken": "foo",
             "nonProdToken": "user password",
         },

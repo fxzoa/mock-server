@@ -5,11 +5,11 @@ console.log(`## mockserver-properties = ${process.env.MOCKSERVER_PROPERTY_FILE} 
 var mockserver = require('mockserver-node');
 
 mockserver.start_mockserver({
-                serverPort: 1080,
+                serverPort: 80,
                 proxyRemotePort: process.env.proxyRemotePort,
                 proxyRemoteHost: process.env.proxyRemoteHost,
                 trace: true,
-                verbose: true
+               // verbose: true
             });
 
 /*

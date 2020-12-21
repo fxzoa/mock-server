@@ -2,7 +2,7 @@
 //@host = http://localhost:80
 @expect = /mockserver/expectation
 
-### forward exact request
+### create expectation
 curl -v -X PUT {{host}}{{expect}} -d '{
     "priority": 2,
     "httpRequest": {
@@ -16,6 +16,18 @@ curl -v -X PUT {{host}}{{expect}} -d '{
                 "id": 3,
                 "name": "Suzuki 鈴木 from proxy",
                 "email": "suzuki-proxy@example.com"
+            }
+        }
+    }
+}'
+
+### update expectation
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "id": "80e4f68f-56fd-47c3-a991-6e2b7068a7ed",
+    "httpResponse": {
+        "body": {
+            "json": {
+                "name": "Suzuki 鈴木 from proxy updated.",
             }
         }
     }
