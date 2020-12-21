@@ -1,0 +1,96 @@
+[ {
+  "id" : "8a400b70-61ba-4429-92e3-883523266e66",
+  "priority" : 2,
+  "httpRequest" : {
+    "method" : "GET",
+    "path" : "/users/3"
+  },
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "body" : {
+      "type" : "JSON",
+      "json" : {
+        "id" : 3,
+        "name" : "Suzuki 鈴木 from proxy",
+        "email" : "suzuki-proxy@example.com"
+      }
+    }
+  }
+}, {
+  "id" : "92197ec8-2349-4ff4-8bb1-fbc9e7535e82",
+  "priority" : 1,
+  "httpRequest" : {
+    "method" : "GET",
+    "path" : "/users/3"
+  },
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "statusCode" : 200,
+    "body" : {
+      "type" : "JSON",
+      "json" : {
+        "id" : 3,
+        "name" : "Suzuki 鈴木",
+        "email" : "suzuki-proxy@example.com"
+      }
+    }
+  }
+}, {
+  "id" : "6ebf2f55-52a4-4cc4-9490-12aff058acdb",
+  "priority" : 0,
+  "httpRequest" : {
+    "method" : "GET",
+    "path" : "/users/3"
+  },
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "statusCode" : 200,
+    "body" : {
+      "type" : "JSON",
+      "json" : {
+        "id" : 3,
+        "name" : "Suzuki in proxy",
+        "email" : "suzuki-proxy@example.com"
+      }
+    }
+  }
+}, {
+  "id" : "58d060af-03c5-4832-aa00-3838118637e0",
+  "priority" : 0,
+  "httpRequest" : {
+    "method" : "GET",
+    "path" : "/users/3"
+  },
+  "times" : {
+    "unlimited" : true
+  },
+  "timeToLive" : {
+    "unlimited" : true
+  },
+  "httpResponse" : {
+    "statusCode" : 200,
+    "body" : {
+      "type" : "JSON",
+      "json" : {
+        "id" : 3,
+        "name" : "Suzuki 鈴木",
+        "email" : "suzuki-proxy@example.com"
+      }
+    }
+  }
+} ]

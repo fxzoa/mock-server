@@ -1,6 +1,25 @@
 ### file variables define area
-@host = http://localhost:80
+//@host = http://localhost:80
 @expect = /mockserver/expectation
+
+### forward exact request
+curl -v -X PUT {{host}}{{expect}} -d '{
+    "priority": 2,
+    "httpRequest": {
+        "method": "GET",
+        "path": "/users/3",
+    },
+    "httpResponse": {
+        "body": {
+            "type": "json",
+            "json": {
+                "id": 3,
+                "name": "Suzuki 鈴木 from proxy",
+                "email": "suzuki-proxy@example.com"
+            }
+        }
+    }
+}'
 
 ### forward exact request
 curl -v -X PUT {{host}}{{expect}} -d '{
